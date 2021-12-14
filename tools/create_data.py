@@ -91,5 +91,4 @@ def lyft_data_prep(root_path, version="trainval"):
 '''
 
 if __name__ == "__main__":
-    #fire.Fire()
-    kitti_data_prep("/data/zhengwu/KITTI/object")
+    fire.Fire()

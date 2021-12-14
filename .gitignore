@@ -1,0 +1,10 @@
+/build
+/ckpt
+/data
+/det3d.egg-info
+/third_party
+/det3d/core/iou3d/build
+/det3d/core/iou3d/dist
+/det3d/core/iou3d/iou3d.egg-info
+**/*.so
+**/__pycache__

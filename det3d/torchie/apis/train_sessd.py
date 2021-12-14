@@ -21,6 +21,7 @@ from det3d.utils.print_utils import metric_to_str
 from torch import nn
 from torch.nn.parallel import DistributedDataParallel
 from det3d.torchie.parallel import collate, collate_kitti
+from det3d.models import build_detector
 
 from .env import get_root_logger
 import copy
@@ -296,7 +297,20 @@ def train_detector(model, dataset, cfg, distributed=False, validate=False, logge
         model = model.cuda()
     logger.info(f"model structure: {model}")
 
-    model_ema = copy.deepcopy(model)
+    # model_ema = copy.deepcopy(model)
+    model_ema = build_detector(cfg.model, train_cfg=cfg.train_cfg, test_cfg=cfg.test_cfg)
+    if distributed:
+        model_ema = apex.parallel.convert_syncbn_model(model_ema)
+        model_ema = DistributedDataParallel(
+            model_ema.cuda(cfg.local_rank),
+            device_ids=[cfg.local_rank],
+            output_device=cfg.local_rank,
+            # broadcast_buffers=False,
+            find_unused_parameters=True,
+        )
+    else:
+        model_ema = model_ema.cuda()
+
     for param in model_ema.parameters():
         param.detach_()
 

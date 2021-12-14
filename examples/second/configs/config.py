@@ -5,7 +5,7 @@ from pathlib import Path
 from det3d.builder import build_box_coder
 from det3d.utils.config_tool import get_downsample_factor
 
-data_root_prefix = "/mnt/proj50/zhengwu"
+data_root_prefix = "/home/lina/venti/SE-SSD/data"
 
 # norm_cfg = dict(type='SyncBN', eps=1e-3, momentum=0.01)
 norm_cfg = None
@@ -21,7 +21,7 @@ box_coder = dict(type="ground_box3d_coder", n_dim=7, linear_dim=False, encode_an
 # exp_sesssd_release_v1_0: default settings of sesssd
 
 
-TAG = 'exp_se_ssd_v1_8'
+TAG = 'ckpt'
 # torch.set_printoptions(precision=4, sci_mode=False)
 my_paras = dict(
     batch_size=4,
@@ -129,7 +129,7 @@ dataset_type = "KittiDataset"
 db_sampler = dict(
     type="GT-AUG",
     enable=True,
-    db_info_path=data_root_prefix + "/KITTI/object/dbinfos_" + my_paras['data_mode'] +".pkl",
+    db_info_path=data_root_prefix + "/KITTI/dbinfos_" + my_paras['data_mode'] +".pkl",
     sample_groups=[dict(Car=15,),],
     db_prep_steps=[
         dict(filter_by_min_num_points=dict(Car=5,)),
@@ -199,11 +199,11 @@ test_pipeline = [
 training_pipeline = test_pipeline if my_paras['eval_training_set'] else train_pipeline
 
 
-data_root = data_root_prefix + "/KITTI/object"
-train_anno = data_root_prefix + "/KITTI/object/kitti_infos_" + my_paras['data_mode'] + ".pkl"
-val_anno = data_root_prefix + "/KITTI/object/kitti_infos_val.pkl"
-test_anno = data_root_prefix + "/KITTI/object/kitti_infos_test.pkl"
-trainval_anno = data_root_prefix + "/KITTI/object/kitti_infos_trainval.pkl"
+data_root = data_root_prefix + "/KITTI"
+train_anno = data_root_prefix + "/KITTI/kitti_infos_" + my_paras['data_mode'] + ".pkl"
+val_anno = data_root_prefix + "/KITTI/kitti_infos_val.pkl"
+test_anno = data_root_prefix + "/KITTI/kitti_infos_test.pkl"
+trainval_anno = data_root_prefix + "/KITTI/kitti_infos_trainval.pkl"
 
 data = dict(
     samples_per_gpu=my_paras['batch_size'],  # batch_size: 4
@@ -269,10 +269,10 @@ total_epochs = 60
 device_ids = range(8)
 dist_params = dict(backend="nccl", init_method="env://")
 log_level = "INFO"
-work_dir = "/mnt/proj50/zhengwu/saved_model/KITTI/proj52/megvii/second/" + TAG
+work_dir = "/home/lina/venti/SE-SSD/" + TAG
 # load_from: "path of pre-trained checkpoint to initialize both teacher & student, e.g., CIA-SSD pre-trained model"
 # load_from = "/xxx/xxx/xxx/epoch_60.pth"
-load_from = "/mnt/proj50/zhengwu/saved_model/KITTI/proj52/megvii/second/pre_trained_model_2/epoch_60.pth"
+load_from = "/home/lina/venti/SE-SSD/ckpt/se-ssd-model.pth"
 resume_from = None
 workflow = [("train", 60), ("val", 1)] if my_paras['enable_ssl'] else [("train", 60), ("val", 1)]
 save_file = False if TAG == "debug" or TAG == "exp_debug" or Path(work_dir, "Det3D").is_dir() else True

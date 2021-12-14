@@ -1,0 +1,36 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+
+
+            // // test
+            // "program": "${workspaceFolder}/tools/test.py",
+            // "cwd": "${workspaceFolder}/tools",  // 指定调试器的当前工作目录
+            // "console": "integratedTerminal",
+            // "args": [
+            //     "--checkpoint", "se-ssd-model.pth",
+            //     // "--cfg_file", "cfgs/kitti_models/second.yaml",
+            //     // "--ckpt", "../checkpoints/second_7862.pth",
+            //     // "--data_path", "../data/kitti/testing/velodyne/000002.bin"
+            // ]
+
+            // train
+            "program": "${workspaceFolder}/tools/train.py",
+            "cwd": "${workspaceFolder}/tools",  // 指定调试器的当前工作目录
+            "console": "integratedTerminal",
+            "args": [
+                // "--checkpoint", "se-ssd-model.pth",
+                // "--cfg_file", "cfgs/kitti_models/second.yaml",
+                // "--ckpt", "../checkpoints/second_7862.pth",
+                // "--data_path", "../data/kitti/testing/velodyne/000002.bin"
+            ]
+        }
+    ]
+}
